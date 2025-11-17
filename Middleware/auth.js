@@ -7,9 +7,10 @@ const authMiddleware = async (req, res, next) => {
     console.log(validToken);
     req.userid = validToken.UserName;
     req._id = validToken._id;
-    console.log(req.userid, req._id);
+    req.Picture = validToken.Picture;
+    console.log(req.userid, req._id, req.Picture);
   } catch (err) {
-    console.log(err);
+    res.json({ ok: false, msg: "Invalid Token" });
   }
   next();
 };
