@@ -26,7 +26,11 @@ const LoginController = async (req) => {
         };
       } else {
         const token = jwt.sign(
-          { UserName: userExists.Name, _id: userExists._id },
+          {
+            UserName: userExists.Name,
+            _id: userExists._id,
+            Picture: userExists.Picture,
+          },
           process.env.JWT_SECRET,
           { expiresIn: "1d" }
         );
