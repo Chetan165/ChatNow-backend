@@ -42,4 +42,16 @@ router.post("/login", async (req, res) => {
   const result = await LoginController(req, res);
   res.json(result);
 });
+
+router.get("/", authMiddleware, (req, res) => {
+  res.json({
+    ok: true,
+    msg: "authenticated user",
+    user: {
+      UserName: req.userid,
+      User_id: req._id,
+      Picture: req.Picture,
+    },
+  });
+});
 module.exports = router;
