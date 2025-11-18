@@ -4,6 +4,7 @@ const User = require("../models/UserModel");
 const acessChatController = async (req, res) => {
   const user2id = req.body._id;
   const user1id = req._id;
+  const UserName = req.body.UserName;
   try {
     let chat = await Chat.findOne({
       isGroupChat: false,
@@ -27,10 +28,13 @@ const acessChatController = async (req, res) => {
         isGroupChat: false,
         users: [user1id, user2id],
       });
-      const savedChat = await newChat.save();
+      let savedChat = await newChat.save();
+      savedChat = await Chat.populate(savedChat, [
+        { path: "users", select: "-Password" },
+      ]);
       res.json({
         ok: true,
-        savedChat,
+        chat: savedChat,
       });
     }
   } catch (err) {
@@ -62,7 +66,7 @@ const fetchChatsController = async (req, res) => {
     } else {
       res.json({
         ok: true,
-        userChats,
+        chats: userChats,
       });
     }
   } catch (err) {
