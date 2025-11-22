@@ -18,7 +18,7 @@ const acessChatController = async (req, res) => {
       select: "Name Picture",
     });
     if (chat) {
-      res.json({
+      return res.json({
         ok: true,
         chat,
       });
@@ -32,14 +32,14 @@ const acessChatController = async (req, res) => {
       savedChat = await Chat.populate(savedChat, [
         { path: "users", select: "-Password" },
       ]);
-      res.json({
+      return res.json({
         ok: true,
         chat: savedChat,
       });
     }
   } catch (err) {
     console.log(err);
-    res.json({
+    return res.json({
       ok: false,
       msg: err,
     });
@@ -59,18 +59,18 @@ const fetchChatsController = async (req, res) => {
       select: "Name Picture",
     });
     if (!userChats.length) {
-      res.json({
+      return res.json({
         ok: false,
         msg: "No Chats Found",
       });
     } else {
-      res.json({
+      return res.json({
         ok: true,
         chats: userChats,
       });
     }
   } catch (err) {
-    res.json({
+    return res.json({
       ok: false,
       msg: err.message,
     });
@@ -112,12 +112,12 @@ const createGroupController = async (req, res) => {
         select: "Content Sender",
       },
     ]);
-    res.status(200).json({
+    return res.status(200).json({
       ok: true,
       savedGroupChat,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       ok: false,
       msg: err.message,
     });
@@ -135,12 +135,12 @@ const renameGroupController = async (req, res) => {
     .populate("users", "-Password")
     .populate("groupAdmin", "-Password");
   if (!updatedChat) {
-    res.status(404).json({
+    return res.status(404).json({
       ok: false,
       msg: "Chat Not Found",
     });
   } else {
-    res.json({
+    return res.json({
       ok: true,
       updatedChat,
     });
@@ -176,9 +176,9 @@ const removeFromGroupController = async (req, res) => {
       select: "Name Picture",
     });
 
-    res.json({ ok: true, updatedChat });
+    return res.json({ ok: true, updatedChat });
   } catch (err) {
-    res.status(500).json({ ok: false, msg: err.message });
+    return res.status(500).json({ ok: false, msg: err.message });
   }
 };
 const addToGroupController = async (req, res) => {
@@ -211,9 +211,9 @@ const addToGroupController = async (req, res) => {
       select: "Name Picture",
     });
 
-    res.json({ ok: true, updatedChat });
+    return res.json({ ok: true, updatedChat });
   } catch (err) {
-    res.status(500).json({ ok: false, msg: err.message });
+    return res.status(500).json({ ok: false, msg: err.message });
   }
 };
 
